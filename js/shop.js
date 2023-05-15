@@ -85,32 +85,60 @@ function printCart() {
   const cartItems = {};
 
   cart.forEach((item) => {
-      const name = item.name;
-      if (!cartItems[name]) {
-          cartItems[name] = { name, qty: item.qty, price: item.price, total: item.total };
-      } else {
-          cartItems[name].qty += item.qty;
-      }
+    const name = item.name;
+    if (!cartItems[name]) {
+      cartItems[name] = { name, qty: item.qty, price: item.price, total: item.total };
+    } else {
+      cartItems[name].qty += item.qty;
+    }
   });
 
   Object.values(cartItems).forEach((item) => {
-      const newRow = document.createElement('tr');
-      const nameCell = document.createElement('th');
-      const priceCell = document.createElement('td');
-      const qtyCell = document.createElement('td');
-      const totalCell = document.createElement('td');
+    const newRow = document.createElement('tr');
+    const nameCell = document.createElement('th');
+    const priceCell = document.createElement('td');
+    const qtyCell = document.createElement('td');
+    const totalCell = document.createElement('td');
 
-      nameCell.textContent = item.name;
-      priceCell.textContent = item.price;
-      qtyCell.textContent = item.qty;
-      totalCell.textContent = item.total;
+    nameCell.textContent = item.name;
+    priceCell.textContent = item.price;
 
-      newRow.appendChild(nameCell);
-      newRow.appendChild(priceCell);
-      newRow.appendChild(qtyCell);
-      newRow.appendChild(totalCell);
+    const qtyInput = document.createElement('input');
+    qtyInput.type = 'number';
+    qtyInput.value = item.qty;
+    qtyInput.classList = 'qty-id';
+    qtyInput.addEventListener('change', (event) => {
+      const newQty = parseInt(event.target.value);
 
-      cartListTableBody.appendChild(newRow);
+    // Find the index of the corresponding item in the cart array
+    const itemIndex = cart.findIndex((cartItem) => cartItem.name === item.name);
+
+    // Update the quantity in the cart array
+    if (itemIndex !== -1) {
+      cart[itemIndex].qty = newQty;
+      cart[itemIndex].total = item.price * newQty;
+    }
+
+    // Recalculate the total
+  const newTotal = cart.reduce((accumulator, item) => accumulator + item.total, 0);
+
+  // Update the totalCell text content
+  totalCell.textContent = newTotal;
+
+    // Log the updated cart array
+    console.log('Updated cart:', cart);
+    console.log('New total:', newTotal);
+    });    
+
+    qtyCell.appendChild(qtyInput);
+    totalCell.textContent = item.total;
+
+    newRow.appendChild(nameCell);
+    newRow.appendChild(priceCell);
+    newRow.appendChild(qtyCell);
+    newRow.appendChild(totalCell);
+
+    cartListTableBody.appendChild(newRow);
   });
 }
 

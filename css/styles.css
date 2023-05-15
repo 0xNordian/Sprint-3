@@ -64,6 +64,15 @@
   --bs-body-bg: #fff;
 }
 
+.qty-id{
+  width: 2.5rem;
+  border: 0px
+}
+
+.qty-id:hover{
+  border: 2px;
+}
+
 *,
 *::before,
 *::after {
