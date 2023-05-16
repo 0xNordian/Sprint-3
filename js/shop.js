@@ -31,6 +31,7 @@ function buy(id) {
   //console.log('Updated cartList:', cartList);
   calculateTotal();
   generateCart();
+  productCount();
 }
 
 // Exercise 2
@@ -123,7 +124,7 @@ console.log("cart: ", cart);
     qtyInput.value = item.qty;
     qtyInput.classList = 'qty-id';
     qtyInput.addEventListener('change', (event) => {
-      const newQty = parseInt(event.target.value);
+    const newQty = parseInt(event.target.value);
 
 
     // Update the quantity in the cart array
@@ -137,7 +138,7 @@ console.log("cart: ", cart);
 
     // Update the totalCell text content
     totalCell.textContent = newTotal;
-
+    productCount();
     // Log the updated cart array
     //console.log('Updated cart:', cart);
     //console.log('New total:', newTotal);
@@ -174,6 +175,7 @@ function removeFromCart(itemIndex) {
             cart.splice(itemIndex, 1);
             cartList = [];
             printCart();
+            productCount();
         }
         calculateTotal();
 }
@@ -182,6 +184,15 @@ function open_modal(){
 	console.log("Open Modal");
 	printCart();
     calculateTotal();
+    productCount();
     console.log("cartList: ", cartList);
     console.log("cart: ", cart);
+}
+
+function productCount(){
+    let productCount = 0;
+    cart.forEach((item) => productCount += item.qty);
+    const prodTotal = document.getElementById('count_product');
+    prodTotal.innerText = productCount;
+    console.log("productCount", productCount);
 }
