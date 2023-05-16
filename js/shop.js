@@ -28,7 +28,7 @@ function buy(id) {
   let res = JSON.stringify(products[id - 1]);
   let product = JSON.parse(res);
   products.forEach((item) => item.id === product.id ? cartList.push(item) : undefined);
-  console.log('Updated cartList:', cartList);
+  //console.log('Updated cartList:', cartList);
   calculateTotal();
   generateCart();
 }
@@ -47,7 +47,7 @@ function calculateTotal() {
     // Calculate total price of the cart using the "cartList" array
     let totalPrice = 0;
     cartList.forEach((item) => totalPrice += item.price);
-    console.log(`cartList total price: ${totalPrice}`)
+    //console.log(`cartList total price: ${totalPrice}`)
     return totalPrice;
 }
 
@@ -55,7 +55,7 @@ function calculateTotal() {
 function generateCart() {
     // Using the "cartlist" array that contains all the items in the shopping cart, 
     // generate the "cart" array that does not contain repeated items, instead each item of this array "cart" shows the quantity of product.
-  cart = [];
+  if(cart.length === 0) cart = [];
   cartList.forEach((item) => {
     let name = item.name;
     let existingItemIndex = cart.findIndex((cartItem) => cartItem.name === name);
@@ -67,8 +67,6 @@ function generateCart() {
       cart.push({ name: name, price: item.price, qty: 1, total: item.price });
     }
   });
-
-  console.log('Cart:', cart); 
   printCart();
 }
 
@@ -109,13 +107,18 @@ function printCart() {
     const itemIndex = cart.findIndex((cartItem) => cartItem.name === item.name);
 
     deleteBtn.addEventListener('click', (event) => {
-        console.log("Trash clicked");
-        console.log("Item Index: ", itemIndex);
+        //console.log("Trash clicked");
+        //console.log("Item Index: ", itemIndex);
         if(itemIndex !== -1) {
             cart.splice(itemIndex, 1);
+            cartList = [];
             printCart();
         }
     })
+
+console.log("cartList: ", cartList);
+console.log("cart: ", cart);
+
 
     const qtyInput = document.createElement('input');
     qtyInput.type = 'number';
@@ -138,8 +141,8 @@ function printCart() {
     totalCell.textContent = newTotal;
 
     // Log the updated cart array
-    console.log('Updated cart:', cart);
-    console.log('New total:', newTotal);
+    //console.log('Updated cart:', cart);
+    //console.log('New total:', newTotal);
     });    
 
     qtyCell.appendChild(qtyInput);
