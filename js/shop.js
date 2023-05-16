@@ -38,6 +38,7 @@ function cleanCart() {
   //console.log(`cartList pre clean: ${JSON.stringify(cartList)}`)
   cart = [];
   cartList = [];
+  calculateTotal();
   printCart();
   //console.log(`cartList post clean: ${JSON.stringify(cartList)}`)
 }
@@ -45,9 +46,12 @@ function cleanCart() {
 // Exercise 3
 function calculateTotal() {
     // Calculate total price of the cart using the "cartList" array
+    const cartTotal = document.getElementById('total_price');
+    cartTotal.innerText = '0';
     let totalPrice = 0;
-    cartList.forEach((item) => totalPrice += item.price);
-    //console.log(`cartList total price: ${totalPrice}`)
+    cart.forEach((item) => totalPrice += item.total);
+    cartTotal.innerHTML = totalPrice;
+    console.log(`cartList total price: ${totalPrice}`)
     return totalPrice;
 }
 
@@ -55,7 +59,8 @@ function calculateTotal() {
 function generateCart() {
     // Using the "cartlist" array that contains all the items in the shopping cart, 
     // generate the "cart" array that does not contain repeated items, instead each item of this array "cart" shows the quantity of product.
-  if(cart.length === 0) cart = [];
+  //if(cart.length === 0) cart = [];
+  cart = [];
   cartList.forEach((item) => {
     let name = item.name;
     let existingItemIndex = cart.findIndex((cartItem) => cartItem.name === name);
@@ -105,15 +110,8 @@ function printCart() {
 
     // Find the index of the corresponding item in the cart array
     const itemIndex = cart.findIndex((cartItem) => cartItem.name === item.name);
-
     deleteBtn.addEventListener('click', (event) => {
-        //console.log("Trash clicked");
-        //console.log("Item Index: ", itemIndex);
-        if(itemIndex !== -1) {
-            cart.splice(itemIndex, 1);
-            cartList = [];
-            printCart();
-        }
+        removeFromCart(itemIndex);
     })
 
 console.log("cartList: ", cartList);
@@ -169,12 +167,21 @@ function addToCart(id) {
 }
 
 // Exercise 8
-function removeFromCart(id) {
+function removeFromCart(itemIndex) {
     // 1. Loop for to the array products to get the item to add to cart
     // 2. Add found product to the cartList array
+        if(itemIndex !== -1) {
+            cart.splice(itemIndex, 1);
+            cartList = [];
+            printCart();
+        }
+        calculateTotal();
 }
 
 function open_modal(){
 	console.log("Open Modal");
 	printCart();
+    calculateTotal();
+    console.log("cartList: ", cartList);
+    console.log("cart: ", cart);
 }
