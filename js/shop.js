@@ -99,9 +99,23 @@ function printCart() {
     const priceCell = document.createElement('td');
     const qtyCell = document.createElement('td');
     const totalCell = document.createElement('td');
+    const deleteBtn = document.createElement('td');
 
     nameCell.textContent = item.name;
     priceCell.textContent = item.price;
+    deleteBtn.classList = 'fa fa-trash';
+
+    // Find the index of the corresponding item in the cart array
+    const itemIndex = cart.findIndex((cartItem) => cartItem.name === item.name);
+
+    deleteBtn.addEventListener('click', (event) => {
+        console.log("Trash clicked");
+        console.log("Item Index: ", itemIndex);
+        if(itemIndex !== -1) {
+            cart.splice(itemIndex, 1);
+            printCart();
+        }
+    })
 
     const qtyInput = document.createElement('input');
     qtyInput.type = 'number';
@@ -110,8 +124,6 @@ function printCart() {
     qtyInput.addEventListener('change', (event) => {
       const newQty = parseInt(event.target.value);
 
-    // Find the index of the corresponding item in the cart array
-    const itemIndex = cart.findIndex((cartItem) => cartItem.name === item.name);
 
     // Update the quantity in the cart array
     if (itemIndex !== -1) {
@@ -120,10 +132,10 @@ function printCart() {
     }
 
     // Recalculate the total
-  const newTotal = cart.reduce((accumulator, item) => accumulator + item.total, 0);
+    const newTotal = cart.reduce((accumulator, item) => accumulator + item.total, 0);
 
-  // Update the totalCell text content
-  totalCell.textContent = newTotal;
+    // Update the totalCell text content
+    totalCell.textContent = newTotal;
 
     // Log the updated cart array
     console.log('Updated cart:', cart);
@@ -137,6 +149,7 @@ function printCart() {
     newRow.appendChild(priceCell);
     newRow.appendChild(qtyCell);
     newRow.appendChild(totalCell);
+    newRow.appendChild(deleteBtn);
 
     cartListTableBody.appendChild(newRow);
   });
