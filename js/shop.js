@@ -5,7 +5,8 @@ async function fetchProducts() {
     const response = await fetch('../products.json');
     const data = await response.json();
     products = data;
-
+    console.log("Data fetched")
+    console.log("Fetched products: ", products)
   } catch (error) {
     console.error('Error fetching products:', error);
   }
@@ -13,7 +14,7 @@ async function fetchProducts() {
 
 fetchProducts();
 
- // Array with products (objects) added directly with push(). Products in this array are repeated.
+// Array with products (objects) added directly with push(). Products in this array are repeated.
 var cartList = [];
 
 // Improved version of cartList. Cart is an array of products (objects), but each one has a quantity field to define its quantity, so these products are not repeated.
@@ -27,8 +28,9 @@ function buy(id) {
   // 2. Add found product to the cartList array
   let res = JSON.stringify(products[id - 1]);
   let product = JSON.parse(res);
-  products.forEach((item) => item.id === product.id ? cartList.push(item) : undefined);
-  //console.log('Updated cartList:', cartList);
+  //console.log("product: ", product);
+  products.forEach((item) => item.id === product.id ? cartList.push(item) : undefined); 
+  //console.log('cartList after:', cartList);
   calculateTotal();
   generateCart();
   productCount();
@@ -39,6 +41,7 @@ function cleanCart() {
   //console.log(`cartList pre clean: ${JSON.stringify(cartList)}`)
   cart = [];
   cartList = [];
+  productCount();
   calculateTotal();
   printCart();
   //console.log(`cartList post clean: ${JSON.stringify(cartList)}`)
@@ -46,20 +49,20 @@ function cleanCart() {
 
 // Exercise 3
 function calculateTotal() {
-    // Calculate total price of the cart using the "cartList" array
-    const cartTotal = document.getElementById('total_price');
-    cartTotal.innerText = '0';
-    let totalPrice = 0;
-    cart.forEach((item) => totalPrice += item.total);
-    cartTotal.innerHTML = totalPrice;
-    console.log(`cartList total price: ${totalPrice}`)
-    return totalPrice;
+  // Calculate total price of the cart using the "cartList" array
+  const cartTotal = document.getElementById('total_price');
+  cartTotal.innerText = '0';
+  let totalPrice = 0;
+  cart.forEach((item) => totalPrice += item.total);
+  cartTotal.innerHTML = totalPrice;
+  console.log(`cartList total price: ${totalPrice}`)
+  return totalPrice;
 }
 
 // Exercise 4
 function generateCart() {
-    // Using the "cartlist" array that contains all the items in the shopping cart, 
-    // generate the "cart" array that does not contain repeated items, instead each item of this array "cart" shows the quantity of product.
+  // Using the "cartlist" array that contains all the items in the shopping cart, 
+  // generate the "cart" array that does not contain repeated items, instead each item of this array "cart" shows the quantity of product.
   //if(cart.length === 0) cart = [];
   cart = [];
   cartList.forEach((item) => {
@@ -78,7 +81,7 @@ function generateCart() {
 
 // Exercise 5
 function applyPromotionsCart() {
-    // Apply promotions to each item in the array "cart"
+  // Apply promotions to each item in the array "cart"
 }
 
 // Exercise 6
@@ -112,11 +115,11 @@ function printCart() {
     // Find the index of the corresponding item in the cart array
     const itemIndex = cart.findIndex((cartItem) => cartItem.name === item.name);
     deleteBtn.addEventListener('click', (event) => {
-        removeFromCart(itemIndex);
+      removeFromCart(itemIndex);
     })
 
-console.log("cartList: ", cartList);
-console.log("cart: ", cart);
+    console.log("cartList: ", cartList);
+    console.log("cart: ", cart);
 
 
     const qtyInput = document.createElement('input');
@@ -124,25 +127,31 @@ console.log("cart: ", cart);
     qtyInput.value = item.qty;
     qtyInput.classList = 'qty-id';
     qtyInput.addEventListener('change', (event) => {
-    const newQty = parseInt(event.target.value);
+      const newQty = parseInt(event.target.value);
 
 
-    // Update the quantity in the cart array
-    if (itemIndex !== -1) {
-      cart[itemIndex].qty = newQty;
-      cart[itemIndex].total = item.price * newQty;
-    }
+      // Update the quantity in the cart array
+      if (itemIndex !== -1) {
+        cart[itemIndex].qty = newQty;
+        cart[itemIndex].total = item.price * newQty;
+      }
 
-    // Recalculate the total
-    const newTotal = cart.reduce((accumulator, item) => accumulator + item.total, 0);
+      if (cartList[itemIndex]) {
+        cartList[itemIndex].qty = newQty;
+        cartList[itemIndex].total = item.price * newQty;
+      }
 
-    // Update the totalCell text content
-    totalCell.textContent = newTotal;
-    productCount();
-    // Log the updated cart array
-    //console.log('Updated cart:', cart);
-    //console.log('New total:', newTotal);
-    });    
+      // Recalculate the total
+      const newTotal = cart.reduce((accumulator, item) => accumulator + item.total, 0);
+
+      // Update the totalCell text content
+      totalCell.textContent = newTotal;
+      productCount();
+      calculateTotal();
+      // Log the updated cart array
+      //console.log('Updated cart:', cart);
+      //console.log('New total:', newTotal);
+    });
 
     qtyCell.appendChild(qtyInput);
     totalCell.textContent = item.total;
@@ -162,37 +171,52 @@ console.log("cart: ", cart);
 
 // Exercise 7
 function addToCart(id) {
-    // Refactor previous code in order to simplify it 
-    // 1. Loop for to the array products to get the item to add to cart
-    // 2. Add found product to the cart array or update its quantity in case it has been added previously.
+  // Refactor previous code in order to simplify it 
+  // 1. Loop for to the array products to get the item to add to cart
+  // 2. Add found product to the cart array or update its quantity in case it has been added previously.
+  const product = products.find((item) => item.id === id);
+  if (product) {
+    cartList.push(product);
+    cart.push(product);
+  }
+  generateCart();
+  printCart();
+  productCount();
+  calculateTotal();
 }
 
 // Exercise 8
 function removeFromCart(itemIndex) {
-    // 1. Loop for to the array products to get the item to add to cart
-    // 2. Add found product to the cartList array
-        if(itemIndex !== -1) {
-            cart.splice(itemIndex, 1);
-            cartList = [];
-            printCart();
-            productCount();
-        }
-        calculateTotal();
-}
-
-function open_modal(){
-	console.log("Open Modal");
-	printCart();
-    calculateTotal();
+  // 1. Loop for to the array products to get the item to add to cart
+  // 2. Add found product to the cartList array
+  if (itemIndex !== -1) {
+    cart.splice(itemIndex, 1);
+    cartList = [];
+    printCart();
     productCount();
-    console.log("cartList: ", cartList);
-    console.log("cart: ", cart);
+  }
+  calculateTotal();
 }
 
-function productCount(){
-    let productCount = 0;
-    cart.forEach((item) => productCount += item.qty);
-    const prodTotal = document.getElementById('count_product');
-    prodTotal.innerText = productCount;
-    console.log("productCount", productCount);
+function open_modal() {
+  console.log("Open Modal");
+  printCart();
+  calculateTotal();
+  productCount();
+  console.log("cartList: ", cartList);
+  console.log("cart: ", cart);
 }
+
+function productCount() {
+  let productCount = 0;
+  cart.forEach((item) => productCount += item.qty);
+  const prodTotal = document.getElementById('count_product');
+  prodTotal.innerText = productCount;
+  console.log("productCount", productCount);
+}
+
+// function close_modal() {
+//   console.log("Close Modal");
+//   const modal = document.getElementById('modal');
+//   modal.classList.remove('is-active');
+// }
