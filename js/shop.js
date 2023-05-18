@@ -229,9 +229,3 @@ function productCount() {
   prodTotal.innerText = productCount;
   console.log("productCount", productCount);
 }
-
-// function close_modal() {
-//   console.log("Close Modal");
-//   const modal = document.getElementById('modal');
-//   modal.classList.remove('is-active');
-// }
