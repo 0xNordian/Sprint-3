@@ -23,16 +23,25 @@ var cart = [];
 var total = 0;
 
 // Exercise 1
+// function buy(id) {
+//   // 1. Loop for to the array products to get the item to add to cart
+//   // 2. Add found product to the cartList array
+//   let res = JSON.stringify(products[id - 1]);
+//   let product = JSON.parse(res);
+//   //console.log("product: ", product);
+//   products.forEach((item) => item.id === product.id ? cartList.push(item) : undefined);
+//   //console.log('cartList after:', cartList);
+//   calculateTotal();
+//   generateCart();
+//   productCount();
+// }
+
 function buy(id) {
-  // 1. Loop for to the array products to get the item to add to cart
-  // 2. Add found product to the cartList array
   let res = JSON.stringify(products[id - 1]);
   let product = JSON.parse(res);
-  //console.log("product: ", product);
-  products.forEach((item) => item.id === product.id ? cartList.push(item) : undefined); 
-  //console.log('cartList after:', cartList);
-  calculateTotal();
+  products.forEach((item) => item.id === product.id ? cartList.push(item) : undefined);
   generateCart();
+  calculateTotal();
   productCount();
 }
 
@@ -141,16 +150,10 @@ function printCart() {
         cartList[itemIndex].total = item.price * newQty;
       }
 
-      // Recalculate the total
-      const newTotal = cart.reduce((accumulator, item) => accumulator + item.total, 0);
-
       // Update the totalCell text content
-      totalCell.textContent = newTotal;
+      totalCell.textContent = item.price * newQty;
       productCount();
       calculateTotal();
-      // Log the updated cart array
-      //console.log('Updated cart:', cart);
-      //console.log('New total:', newTotal);
     });
 
     qtyCell.appendChild(qtyInput);
@@ -171,15 +174,27 @@ function printCart() {
 
 // Exercise 7
 function addToCart(id) {
-  // Refactor previous code in order to simplify it 
-  // 1. Loop for to the array products to get the item to add to cart
-  // 2. Add found product to the cart array or update its quantity in case it has been added previously.
   const product = products.find((item) => item.id === id);
+
   if (product) {
-    cartList.push(product);
-    cart.push(product);
+    const cartProduct = cart.find((cartItem) => cartItem.name === product.name);
+
+    if (cartProduct) {
+      cartProduct.qty++;
+      cartProduct.total += product.price;
+    } else {
+      cart.push({
+        name: product.name,
+        price: product.price,
+        qty: 1,
+        total: product.price
+      });
+    }
+
+    // Keep cartList in sync with cart
+    cartList = cart.map((item) => ({ ...item }));
   }
-  generateCart();
+
   printCart();
   productCount();
   calculateTotal();
