@@ -12,7 +12,12 @@ async function fetchProducts() {
   }
 }
 
-fetchProducts();
+async function initialize() {
+  await fetchProducts();
+}
+
+initialize();
+
 
 // Array with products (objects) added directly with push(). Products in this array are repeated.
 var cartList = [];
@@ -23,19 +28,6 @@ var cart = [];
 var total = 0;
 
 // Exercise 1
-// function buy(id) {
-//   // 1. Loop for to the array products to get the item to add to cart
-//   // 2. Add found product to the cartList array
-//   let res = JSON.stringify(products[id - 1]);
-//   let product = JSON.parse(res);
-//   //console.log("product: ", product);
-//   products.forEach((item) => item.id === product.id ? cartList.push(item) : undefined);
-//   //console.log('cartList after:', cartList);
-//   calculateTotal();
-//   generateCart();
-//   productCount();
-// }
-
 function buy(id) {
   let res = JSON.stringify(products[id - 1]);
   let product = JSON.parse(res);
@@ -43,17 +35,18 @@ function buy(id) {
   generateCart();
   calculateTotal();
   productCount();
+  applyPromotionsCart();
 }
 
 // Exercise 2
 function cleanCart() {
-  //console.log(`cartList pre clean: ${JSON.stringify(cartList)}`)
+  ////console.log(`cartList pre clean: ${JSON.stringify(cartList)}`)
   cart = [];
   cartList = [];
   productCount();
   calculateTotal();
   printCart();
-  //console.log(`cartList post clean: ${JSON.stringify(cartList)}`)
+  ////console.log(`cartList post clean: ${JSON.stringify(cartList)}`)
 }
 
 // Exercise 3
@@ -64,7 +57,7 @@ function calculateTotal() {
   let totalPrice = 0;
   cart.forEach((item) => totalPrice += item.total);
   cartTotal.innerHTML = totalPrice;
-  console.log(`cartList total price: ${totalPrice}`)
+  //console.log(`cartList total price: ${totalPrice}`)
   return totalPrice;
 }
 
@@ -77,7 +70,7 @@ function generateCart() {
   cartList.forEach((item) => {
     let name = item.name;
     let existingItemIndex = cart.findIndex((cartItem) => cartItem.name === name);
-    //console.log('existingItemIndex:', existingItemIndex);
+    ////console.log('existingItemIndex:', existingItemIndex);
     if (existingItemIndex !== -1) {
       cart[existingItemIndex].qty += 1;
       cart[existingItemIndex].total += item.price;
@@ -91,6 +84,20 @@ function generateCart() {
 // Exercise 5
 function applyPromotionsCart() {
   // Apply promotions to each item in the array "cart"
+  cartList.forEach((item) => {
+    const itemIndex = cart.findIndex((cartItem) => cartItem.name === item.name);
+    if (item.offer && item.qty >= item.offer.number) {
+      ////console.log("Offer available: ", item.offer.number);
+      ////console.log("Item qty: ", item.qty);
+      let subtotal = item.price * item.qty;
+      let discount = (subtotal * item.offer.percent) / 100;
+      let finalPrice = subtotal - discount;
+      cart[itemIndex].total = finalPrice;
+      //console.log("cart.total: ", cart[itemIndex].total);
+    } else {
+      //console.log("No offer");
+    }
+  });
 }
 
 // Exercise 6
@@ -103,7 +110,7 @@ function printCart() {
   cart.forEach((item) => {
     const name = item.name;
     if (!cartItems[name]) {
-      cartItems[name] = { name, qty: item.qty, price: item.price, total: item.total };
+      cartItems[name] = { id: item.id, name, qty: item.qty, price: item.price, total: item.total, offer: item.offer };
     } else {
       cartItems[name].qty += item.qty;
     }
@@ -127,8 +134,8 @@ function printCart() {
       removeFromCart(itemIndex);
     })
 
-    console.log("cartList: ", cartList);
-    console.log("cart: ", cart);
+    //console.log("cartList: ", cartList);
+    //console.log("cart: ", cart);
 
 
     const qtyInput = document.createElement('input');
@@ -154,6 +161,7 @@ function printCart() {
       totalCell.textContent = item.price * newQty;
       productCount();
       calculateTotal();
+      printInput();
     });
 
     qtyCell.appendChild(qtyInput);
@@ -169,6 +177,50 @@ function printCart() {
   });
 }
 
+function printInput() {
+  cart.forEach((item) => {
+    // Find the index of the corresponding item in the cart array
+    const itemIndex = cart.findIndex((cartItem) => cartItem.name === item.name);
+    console.log("printInput itemIndex: ", item.name, itemIndex)
+    
+    // Create input field
+    const qtyInput = document.createElement('input');
+    qtyInput.type = 'number';
+    qtyInput.value = item.qty;
+
+    // Assign a unique id or data attribute to the input field
+    qtyInput.id = `lp-input-id-${item.id}`; // replace with item.id if items have unique ids
+
+    // Add event listener to update the cart when input value changes
+    qtyInput.addEventListener('change', (event) => {
+      const newQty = parseInt(event.target.value);
+      if (newQty >= 0) { // check if input is valid
+        // Update the quantity in the cart
+        item.qty = newQty;
+
+        // Update the total, etc.
+        // ... your code here ...
+      }
+    });
+    // Append the input field to the cart list
+  });
+  updateInputs();
+  productCount();
+  calculateTotal();
+};
+
+function updateInputs() {
+  cart.forEach((item, index) => {
+    // Find the corresponding input field
+    const input = document.getElementById(`lp-input-id-${item.id}`); // replace with item.id if items have unique ids
+    //console.log("input: ", input);
+    // Update the input value
+    if (input) {
+      input.value = item.qty;
+    }
+
+  });
+}
 
 // ** Nivell II **
 
@@ -184,20 +236,26 @@ function addToCart(id) {
       cartProduct.total += product.price;
     } else {
       cart.push({
+        id: product.id,
         name: product.name,
         price: product.price,
+        type: product.type,
         qty: 1,
-        total: product.price
+        total: product.price,
+        offer: product.offer,
       });
     }
 
     // Keep cartList in sync with cart
     cartList = cart.map((item) => ({ ...item }));
   }
-
   printCart();
+  printInput();
   productCount();
   calculateTotal();
+  applyPromotionsCart();
+  console.log("cartList: ", cartList);
+  console.log("cart: ", cart);
 }
 
 // Exercise 8
@@ -214,12 +272,11 @@ function removeFromCart(itemIndex) {
 }
 
 function open_modal() {
-  console.log("Open Modal");
+  //console.log("Open Modal");
   printCart();
   calculateTotal();
   productCount();
-  console.log("cartList: ", cartList);
-  console.log("cart: ", cart);
+
 }
 
 function productCount() {
@@ -227,5 +284,5 @@ function productCount() {
   cart.forEach((item) => productCount += item.qty);
   const prodTotal = document.getElementById('count_product');
   prodTotal.innerText = productCount;
-  console.log("productCount", productCount);
+  //console.log("productCount", productCount);
 }
