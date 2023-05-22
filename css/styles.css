@@ -140,12 +140,23 @@
 }
 
 .card-shop:hover {
-  transform: translateY(-10px);
+  transform: translateY(-5px);
 }
 
 .card-content {
   padding: 20px;
 }
+
+.modal-width{
+  width: 600px;
+}
+
+@media (min-width: 468px) {
+  .nav-logo{
+    margin-left: 0.6rem;
+  }
+}
+
 
 
 *,
@@ -5574,7 +5585,7 @@ textarea.form-control-lg {
 .modal-dialog {
   position: relative;
   width: auto;
-  margin: 0.5rem;
+  margin: .5rem;
   pointer-events: none;
 }
 .modal.fade .modal-dialog {
@@ -5614,7 +5625,7 @@ textarea.form-control-lg {
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  /* width: 100%; */
   pointer-events: auto;
   background-color: #fff;
   background-clip: padding-box;
