@@ -160,7 +160,7 @@ function printCart() {
       }
 
       // Update the subTotalCell text content
-      if (applyPromotionsCart()) {
+      if (applyPromotionsCart() === true) {
         console.log("A promotion was applied.");
         subTotalCell.style.textDecoration = 'line-through';
         subTotalCell.style.color = 'red';

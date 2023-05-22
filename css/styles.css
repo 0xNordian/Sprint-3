@@ -73,6 +73,15 @@
   border: 2px;
 }
 
+.bg-kings {
+  background-image: url("https://github.com/it-academy-nt/Sprint-3/blob/main/images/Kings-League/kings-league-bg.jpeg");
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
 .image-container {
   width: 275px; /* Adjust as per your requirements */
   height: 500px; /* Adjust as per your requirements */
