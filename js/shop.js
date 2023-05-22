@@ -56,7 +56,7 @@ function calculateTotal() {
   cartTotal.innerText = '0';
   let totalPrice = 0;
   cart.forEach((item) => totalPrice += item.total);
-  cartTotal.innerHTML = totalPrice;
+  cartTotal.innerHTML = `€${totalPrice.toFixed(2)}`;
   //console.log(`cartList total price: ${totalPrice}`)
   return totalPrice;
 }

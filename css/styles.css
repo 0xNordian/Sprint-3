@@ -124,6 +124,30 @@
   text-align: center;
 }
 
+.nav-icon:hover{
+  color: var(--bs-warning);
+}
+
+.nav-title:hover{
+  border-bottom: 1px solid var(--bs-warning);
+}
+
+.card-shop {
+  position: relative;
+  width: 275px; /* Adjust as per your requirements */
+  height: 550px; /* Adjust as per your requirements */
+  transition: transform .4s ease;
+}
+
+.card-shop:hover {
+  transform: translateY(-10px);
+}
+
+.card-content {
+  padding: 20px;
+}
+
+
 *,
 *::before,
 *::after {
