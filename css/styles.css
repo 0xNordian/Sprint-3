@@ -74,17 +74,30 @@
 }
 
 .bg-kings {
-  background-image: url("https://github.com/it-academy-nt/Sprint-3/blob/main/images/Kings-League/kings-league-bg.jpeg");
-  width: 100%;
-  height: 100%;
+  background-image: url("../images/Kings-League/kings-league-bg.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  height: 300px; /* Adjust the height as per your preference */
+}
+
+.baseball-icon{
+  background-image: url("../images/Kings-League/baseball-icon.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 30%; /* Adjust the height as per your preference */
+  width: 30%;
+  margin-right: .5rem;
+}
+
+.kings-logo{
+  width: 2rem;
 }
 
 .image-container {
   width: 275px; /* Adjust as per your requirements */
-  height: 500px; /* Adjust as per your requirements */
+  height: 550px; /* Adjust as per your requirements */
   overflow: hidden; /* Optional: Hides any overflowing parts of the image */
 }
 
