@@ -81,6 +81,10 @@
   height: 300px; /* Adjust the height as per your preference */
 }
 
+.header-dimension{
+  width: 100vw;
+}
+
 .baseball-icon{
   background-image: url("../images/Kings-League/baseball-icon.jpg");
   background-repeat: no-repeat;
@@ -185,6 +189,22 @@ input:focus:invalid {
   border: 2px solid var(--bs-warning);
 }
 
+.main-product{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-container {
+  width: 100px;
+}
+
+.nav-hg{
+  height: 70px;
+}
 
 *,
 *::before,
@@ -3567,7 +3587,7 @@ textarea.form-control-lg {
 
 .btn-outline-dark {
   color: #212529;
-  border-color: #212529;
+  border-color: #ccc;
 }
 .btn-outline-dark:hover {
   color: #fff;
@@ -4665,7 +4685,7 @@ textarea.form-control-lg {
 
 .card-body {
   flex: 1 1 auto;
-  padding: 1rem 1rem;
+  padding: 0rem 0rem;
 }
 
 .card-title {
