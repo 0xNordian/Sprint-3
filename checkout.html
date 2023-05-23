@@ -8,9 +8,14 @@
 	<meta name="author" content="" />
 	<title>Checkout</title>
 	<!-- Favicon-->
-	<link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="./images/Kings-League/favicon.png"
+    />
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="./css/styles.css" />
 
 	<!-- Bootstrap icons-->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
@@ -20,43 +25,73 @@
 
 <body>
 	<!-- Navigation-->
-	<nav class="navbar py-3 py-lg-0 navbar-light bg-light navbar-expand-lg" id="navbar-example2">
-		<div class="container d-flex">
-			<a class="navbar-brand" href="#!">ShopNow</a>
-			<div class="d-flex flex-row order-lg-last align-items-center">
+    <nav
+      class="navbar navbar-default navbar-fixed-top py-3 py-lg-0 navbar-light bg-light navbar-expand-lg"
+      id="navbar-example2"
+    >
+      <div class="container d-flex">
+		<a href="index.html" class="src"> <img
+          src="./images/Kings-League/logo-kings.svg"
+          class="kings-logo"
+          alt=""
+        /></a>
+        <a class="navbar-brand nav-logo" href="index.html"> KingsShop</a>
+        <div class="d-flex flex-row order-lg-last align-items-center">
+          <button
+            type="button"
+            class="navbar-toggler order-last collapsed"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbar"
+            aria-expanded="false"
+            aria-controls="navbar"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <ul
+            class="navbar-nav me-3 me-lg-0 d-flex flex-row align-items-center"
+          >
+            <li class="dropdown search-dropdown nav-item py-lg-3">
+              <a
+                href="javascript:void(0)"
+                class="btn btn-outline-dark bg-warning text-black flex-center"
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#cartModal"
+                onclick="open_modal()"
+                data-bs-auto-close="outside"
+              >
+                <i class="fas fa-shopping-cart me-1"></i> Cart
+                <span
+                  class="badge bg-dark text-white ms-1 rounded-pill"
+                  id="count_product"
+                  >0</span
+                >
+              </a>
+            </li>
+          </ul>
+        </div>
 
-				<button type="button" class="navbar-toggler order-last collapsed" data-bs-toggle="collapse"
-					data-bs-target="#navbar" aria-expanded="false" aria-controls="navbar">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<ul class="navbar-nav me-3 me-lg-0 d-flex flex-row align-items-center">
-					<li class="dropdown search-dropdown nav-item py-lg-3">
-						<a href="javascript:void(0)" class="btn btn-outline-dark flex-center" type="button" data-bs-toggle="modal"
-							data-bs-target="#cartModal" onclick="open_modal()" data-bs-auto-close="outside">
-							<i class="fas fa-shopping-cart me-1"></i> Cart <span class="badge bg-dark text-white ms-1 rounded-pill"
-								id="count_product">0</span>
-						</a>
-					</li>
-				</ul>
-			</div>
-
-			<div id="navbar" class="navbar-collapse collapse">
-
-				<ul class="navbar-nav me-auto mb-4 mb-lg-0 ms-lg-5">
-					<li class="nav-item">
-						<a class="nav-link" href="#grocery"><i class="fas fa-shopping-basket"></i> Grocery</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#beauty"><i class="fas fa-heart"></i> Beauty</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#clothes"><i class="fas fa-tshirt"></i> Clothes</a>
-					</li>
-
-				</ul>
-			</div>
-		</div>
-	</nav>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="navbar-nav me-auto mb-4 mb-lg-0 ms-lg-5">
+            <li class="nav-item nav-title">
+              <a class="nav-link" href="#camisetas"
+                ><i class="fas fa-tshirt pe-2 nav-icon"></i>Camisetas</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-title" href="#bufandas"
+                ><i class="fas fa-bolt pe-2 nav-icon"></i>Bufanda</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-title" href="#clothes"
+                ><i class="fas fa-note-sticky pe-1 nav-icon"></i> Gorras</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 	<div class="container">
 		<h1 class="text-center head m-4">Checkout Page</h1>
 
@@ -77,44 +112,45 @@
 				<h3 class="my-3 bord shadow text-center"><i class="fas fa-stopwatch p-2"></i>Delivery on time</h3>
 			</div>
 		</div>
-		<form class="form">
+		<form class="form" action="thankyou.html">
 			<div class="row bord p-5 shadow m-5">
 				<div class="col-sm-6">
 					<div class="mt-3">
-						<label for="fName" class="form-label">First Name:</label>
-						<input id="fName" class="form-control ml-3" type="text" placeholder="First Name" />
+						<label for="fName" class="form-label"><span class="req">*</span> First Name:</label>
+						<input id="fName" class="form-control ml-3" type="text" placeholder="Jane" required />
 						<div id="errorName" class="invalid-feedback">This field is required and must have, at least, 3 characters
 						</div>
+						<div id="errorTest" class="error"></div>
 					</div>
 					<div class="mt-3 ">
-						<label for="fEmail" class="form-label">Email:</label>
-						<input id="fEmail" class="form-control ml-3" type="email" placeholder="Email" minlength="3" />
+						<label for="fEmail" class="form-label"><span class="req">*</span> Email:</label>
+						<input id="fEmail" class="form-control ml-3" type="email" placeholder="jane@email.com" minlength="3" required />
 						<div id="errorEmail" class="invalid-feedback">This field is required and must contain an '@' and have, at
 							least, 3 characters</div>
 					</div>
 					<div class="mt-3 ">
-						<label for="fAddress" class="form-label">Address:</label>
-						<input id="fAddress" class="form-control" type="text" placeholder="Address" minlength="3" />
+						<label for="fAddress" class="form-label"><span class="req">*</span> Address:</label>
+						<input id="fAddress" class="form-control" type="text" placeholder="Av. Street. 180" minlength="3" required />
 						<div id="errorAddress" class="invalid-feedback">This field is required and must have, at least, 3 characters
 						</div>
 					</div>
 				</div>
 				<div class="col-sm-6">
 					<div class="mt-3">
-						<label for="fLastN" class="form-label">Last Name:</label>
-						<input id="fLastN" class="form-control" type="text" placeholder="Last Name" minlength="3" />
+						<label for="fLastN" class="form-label"><span class="req">*</span> Last Name:</label>
+						<input id="fLastN" class="form-control" type="text" placeholder="Doe" minlength="3" required />
 						<div id="errorLastN" class="invalid-feedback">This field is required and must have, at least, 3 characters
 						</div>
 					</div>
 					<div class="mt-3">
-						<label for="fPassword" class="form-label">Password:</label>
+						<label for="fPassword" class="form-label"><span class="req">*</span> Password:</label>
 						<input id="fPassword" class="form-control" title="(4-8 characters)" type="password" minlength="4"
-							maxlength="8" placeholder="Password" />
+							maxlength="8" placeholder="***********" required />
 						<div id="errorPassword" class="invalid-feedback">Enter a correct password</div>
 					</div>
 					<div class="mt-3">
-						<label for="fPhone" class="form-label">Phone Number:</label>
-						<input id="fPhone" class="form-control" type="number" placeholder="Phone No." />
+						<label for="fPhone" class="form-label"><span class="req">*</span> Phone Number:</label>
+						<input id="fPhone" class="form-control" type="tel" placeholder="+34123456789" required />
 						<div id="errorPhone" class="invalid-feedback">Invalid phone number!! Must be 9 digits with no letters</div>
 					</div>
 				</div>
@@ -132,7 +168,7 @@
 	<!-- Footer-->
 	<footer class="py-3 bg-dark">
 		<div class="container">
-			<p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p>
+			<p class="m-0 text-center text-white">Copyright &copy; KingsShop 2023</p>
 		</div>
 	</footer>
 

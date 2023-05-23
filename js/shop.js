@@ -213,6 +213,7 @@ function printInput() {
     qtyInput.type = 'number';
     qtyInput.value = item.qty;
     qtyInput.id = `lp-input-id-${item.id}`;
+    qtyInput.style.width = '45px';
 
     qtyInput.addEventListener('change', (event) => {
       const newQty = parseInt(event.target.value);
