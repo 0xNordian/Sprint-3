@@ -218,6 +218,7 @@ function printInput() {
     qtyInput.style.textAlign = 'center';
     qtyInput.style.border = '1px solid #ccc';
     qtyInput.style.height = '40px';
+    qtyInput.style.marginLeft = '.8rem';
 
     qtyInput.addEventListener('change', (event) => {
       const newQty = parseInt(event.target.value);

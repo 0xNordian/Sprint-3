@@ -141,10 +141,6 @@
   transition: transform .4s ease;
 }
 
-/* .card-shop:hover {
-  transform: translateY(-5px);
-} */
-
 .card-content {
   padding: 20px;
 }
@@ -164,7 +160,7 @@
 .add-style{
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: 0rem;
 }
 
 .req{
