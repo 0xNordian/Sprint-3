@@ -155,6 +155,7 @@
 
 .prod-anim:hover {
   transform: scale(1.07);
+  filter: saturate(1.2);
 }
 
 .add-style{
@@ -171,37 +172,13 @@ input:invalid {
   border: 2px dotted red;
 }
 
-input:invalid:required {
-
-}
-
-/* input:valid {
-  border: 2px solid black;
-} */
-
-/* @media (min-width: 320px) and (max-width: 425px) {
-  .nav-logo {
-    margin-left: 0.6rem;
-  }
-
-  .product-layout {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-  }
-} */
-
 input:focus:invalid {
   box-shadow: none;
   border: 2px solid var(--bs-warning);
 }
 
-.main-product{
+.main-product {
   width: 100vw;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -215,6 +192,15 @@ input:focus:invalid {
 
 .nav-hg{
   height: 70px;
+}
+
+.prod-imp-h{
+  height: 70px;
+}
+
+.img-size{
+  width: 100%;
+  height: 100%;
 }
 
 *,
