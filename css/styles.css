@@ -203,6 +203,21 @@ input:focus:invalid {
   height: 100%;
 }
 
+/* Default image size */
+#main-image {
+  width: 100%;
+  height: auto;
+}
+
+/* Decreased image size for screens wider than 1440px */
+@media (min-width: 1440px) {
+  #main-image {
+    max-width: 70%;
+    
+  }
+}
+
+
 *,
 *::before,
 *::after {
