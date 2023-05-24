@@ -81,18 +81,12 @@
   height: 300px; /* Adjust the height as per your preference */
 }
 
-.header-dimension{
-  width: 100vw;
+.cont-width{
+  width: 100%%;
 }
 
-.baseball-icon{
-  background-image: url("../images/Kings-League/baseball-icon.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  height: 30%; /* Adjust the height as per your preference */
-  width: 30%;
-  margin-right: .5rem;
+.header-dimension{
+  width: 100vw;
 }
 
 .kings-logo{
@@ -136,6 +130,16 @@
   border-bottom: 1px solid var(--bs-warning);
 }
 
+.navbar-light .navbar-toggler{
+  border: 0px;
+  border-color: none;
+}
+
+.navbar-toggler:focus{
+  border: 0px;
+  outline: 0px;
+}
+
 .card-shop {
   position: relative;
   width: 275px; /* Adjust as per your requirements */
@@ -173,7 +177,6 @@
   display: flex;
   justify-content: center;
   gap: 1rem;
-
 }
 
 .req{
@@ -188,9 +191,9 @@ input:invalid:required {
 
 }
 
-input:valid {
+/* input:valid {
   border: 2px solid black;
-}
+} */
 
 input:focus:invalid {
   box-shadow: none;
@@ -4711,6 +4714,12 @@ textarea.form-control-lg {
 
 .card-link + .card-link {
   margin-left: 1rem;
+}
+
+.card-name:hover{
+  color: black;
+  /* text-decoration: underline; */
+  transition: .6s ease-in-out;
 }
 
 .card-header {
