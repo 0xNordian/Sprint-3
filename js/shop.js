@@ -40,25 +40,23 @@ function buy(id) {
 
 // Exercise 2
 function cleanCart() {
-  ////console.log(`cartList pre clean: ${JSON.stringify(cartList)}`)
+  removeAllInputs();
   cart = [];
   cartList = [];
   productCount();
   calculateTotal();
   printCart();
+  printInput();
   updateInputs();
-  ////console.log(`cartList post clean: ${JSON.stringify(cartList)}`)
 }
 
 // Exercise 3
 function calculateTotal() {
-  // Calculate total price of the cart using the "cartList" array
   const cartTotal = document.getElementById('total_price');
   cartTotal.innerText = '0';
   let totalPrice = 0;
   cart.forEach((item) => totalPrice += item.total);
   cartTotal.innerHTML = `€${totalPrice.toFixed(2)}`;
-  //console.log(`cartList total price: ${totalPrice}`)
   return totalPrice;
 }
 
@@ -66,7 +64,6 @@ function calculateTotal() {
 function generateCart() {
   // Using the "cartlist" array that contains all the items in the shopping cart, 
   // generate the "cart" array that does not contain repeated items, instead each item of this array "cart" shows the quantity of product.
-  //if(cart.length === 0) cart = [];
   cart = [];
   cartList.forEach((item) => {
     let name = item.name;
@@ -85,7 +82,6 @@ function generateCart() {
 // Exercise 5
 function applyPromotionsCart() {
   let promotionApplied = false;
-  // Apply promotions to each item in the array "cart"
   cart.forEach((item) => {
     console.log("Item offer: ", item.offer === true);
     if (item.offer && item.qty >= item.offer.number) {
@@ -95,7 +91,7 @@ function applyPromotionsCart() {
       let finalPrice = subtotal - discount;
       item.total = finalPrice;
 
-      promotionApplied = true; // Promotion applied
+      promotionApplied = true;
     } else {
       console.log("No offer");
     }
@@ -135,7 +131,6 @@ function printCart() {
     nameCell.textContent = item.name;
     priceCell.textContent = item.price;
 
-    // Find the index of the corresponding item in the cart array
     const itemIndex = cart.findIndex((cartItem) => cartItem.name === item.name);
 
     const deleteIcon = document.createElement('i');
@@ -152,25 +147,22 @@ function printCart() {
     qtyInput.addEventListener('change', (event) => {
     const newQty = parseInt(event.target.value);
 
-      // Update the quantity in the cart array
       if (itemIndex !== -1) {
         cart[itemIndex].qty = newQty;
-        cart[itemIndex].total = item.price * newQty;
+        cart[itemIndex].total = (item.price * newQty).toFixed(2);
       }
 
       if (cartList[itemIndex]) {
         cartList[itemIndex].qty = newQty;
-        cartList[itemIndex].total = item.price * newQty;
+        cartList[itemIndex].total = (item.price * newQty).toFixed(2);
       }
 
-      // Update the subTotalCell text content
       if (applyPromotionsCart() === true) {
         console.log("A promotion was applied.");
         subTotalCell.style.textDecoration = 'line-through';
         subTotalCell.style.color = 'red';
         subTotalCell.textContent = (item.price * newQty).toFixed(2);
     
-        // Check if discount icon already exists
         if (!discountCell.querySelector('.fa-piggy-bank')) {
             const discountIcon = document.createElement('i');
             discountIcon.className = 'fa fa-piggy-bank';
@@ -185,11 +177,11 @@ function printCart() {
       applyPromotionsCart();
       printInput();
 
-      newRow.appendChild(discountCell); // This line is moved out of the if condition
+      newRow.appendChild(discountCell);
     });
 
     qtyCell.appendChild(qtyInput);
-    subTotalCell.textContent = item.total;
+    subTotalCell.textContent = (item.total).toFixed(2);
 
     newRow.appendChild(nameCell);
     newRow.appendChild(priceCell);
@@ -203,11 +195,11 @@ function printCart() {
 
 function printInput() {
   cart.forEach((item) => {
-    const inputFieldsDiv = document.getElementById(`input-fields-${item.id}`); // Get the div using a unique ID
-    if (inputFieldsDiv === null) { // If no such div exists (item hasn't been added before), skip this item
+    const inputFieldsDiv = document.getElementById(`input-fields-${item.id}`);
+    if (inputFieldsDiv === null) { 
       return;
     }
-    inputFieldsDiv.innerHTML = ''; // Clear the div before appending new input fields
+    inputFieldsDiv.innerHTML = '';
 
     const qtyInput = document.createElement('input');
     qtyInput.type = 'number';
@@ -222,17 +214,12 @@ function printInput() {
 
     qtyInput.addEventListener('change', (event) => {
       const newQty = parseInt(event.target.value);
-      if (newQty >= 0) { // check if input is valid
-        // Update the quantity in the cart
+      if (newQty >= 0) {
         item.qty = newQty;
-        // Update the total, etc.
-        // ... your code here ...
       }
       productCount();
       calculateTotal();
     });
-
-    // Append the input field to the div
     inputFieldsDiv.appendChild(qtyInput);
   });
   updateInputs();
@@ -240,14 +227,10 @@ function printInput() {
   calculateTotal();
 };
 
-
-
 function updateInputs() {
   cart.forEach((item) => {
     const itemIndexUI = cart.findIndex((cartItem) => cartItem.name === item.name);
-    //console.log("itemIndexUI: ", itemIndexUI);
     const input = document.getElementById(`lp-input-id-${item.id}`);
-    //console.log("input: ", input);
     if (input) {
       input.value = item.qty;
     }
@@ -277,8 +260,6 @@ function addToCart(id) {
         offer: product.offer,
       });
     }
-
-    // Keep cartList in sync with cart
     cartList = cart.map((item) => ({ ...item }));
   }
   applyPromotionsCart();
@@ -295,17 +276,32 @@ function removeFromCart(itemIndex) {
   // 1. Loop for to the array products to get the item to add to cart
   // 2. Add found product to the cartList array
   if (itemIndex !== -1) {
+    const itemId = cart[itemIndex].id;
     cart.splice(itemIndex, 1);
     cartList = [];
     printCart();
     printInput();
     productCount();
+    removeInput(itemId);
   }
   calculateTotal();
 }
 
+function removeInput(itemId) {
+  const inputElement = document.getElementById(`lp-input-id-${itemId}`);
+  if (inputElement) {
+    inputElement.remove();
+  }
+}
+
+function removeAllInputs() {
+  cart.forEach((item) => {
+    const itemId = item.id;
+    removeInput(itemId);
+  });
+}
+
 function open_modal() {
-  //console.log("Open Modal");
   printCart();
   calculateTotal();
   productCount();
@@ -317,5 +313,4 @@ function productCount() {
   cart.forEach((item) => productCount += item.qty);
   const prodTotal = document.getElementById('count_product');
   prodTotal.innerText = productCount;
-  //console.log("productCount", productCount);
 }
