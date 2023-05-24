@@ -27,7 +27,7 @@
     },
     {
       "id": 4,
-      "name": "Buff - Jijantes",
+      "name": "Buff - El Barrio",
       "price": 20,
       "type": "bufanda"
     },
@@ -39,7 +39,7 @@
     },
     {
       "id": 6,
-      "name": "Buff - El Barrio",
+      "name": "Buff - Rayo de BCN",
       "price": 20,
       "type": "bufanda"
     },
@@ -57,7 +57,7 @@
     },
     {
       "id": 9,
-      "name": "Gorra - Rayo",
+      "name": "Gorra - xBuyer",
       "price": 30,
       "type": "gorra"
     }
