@@ -55,7 +55,7 @@ function calculateTotal() {
   const cartTotal = document.getElementById('total_price');
   cartTotal.innerText = '0';
   let totalPrice = 0;
-  cart.forEach((item) => totalPrice += item.total);
+  cart.forEach((item) => totalPrice += parseFloat(item.total));
   cartTotal.innerHTML = `€${totalPrice.toFixed(2)}`;
   return totalPrice;
 }
@@ -68,7 +68,6 @@ function generateCart() {
   cartList.forEach((item) => {
     let name = item.name;
     let existingItemIndex = cart.findIndex((cartItem) => cartItem.name === name);
-    ////console.log('existingItemIndex:', existingItemIndex);
     if (existingItemIndex !== -1) {
       cart[existingItemIndex].qty += 1;
       cart[existingItemIndex].total += item.price;
@@ -109,7 +108,7 @@ function printCart() {
   cart.forEach((item) => {
     const name = item.name;
     if (!cartItems[name]) {
-      cartItems[name] = { id: item.id, name, qty: item.qty, price: item.price, total: item.total, offer: item.offer };
+      cartItems[name] = { id: item.id, name, qty: item.qty, price: item.price, total: item.total, totalDisc: 0, offer: item.offer };
     } else {
       cartItems[name].qty += item.qty;
     }
@@ -123,6 +122,8 @@ function printCart() {
     qtyCell.classList = 'text-center';
     const subTotalCell = document.createElement('td');
     subTotalCell.classList = 'text-center';
+    const prodTotalCell = document.createElement('td');
+    prodTotalCell.classList = 'text-center';
     const deleteBtn = document.createElement('td');
     deleteBtn.classList = 'text-center';
     const discountCell = document.createElement('td');
@@ -145,7 +146,8 @@ function printCart() {
     qtyInput.value = item.qty;
     qtyInput.classList = 'qty-id text-center';
     qtyInput.addEventListener('change', (event) => {
-    const newQty = parseInt(event.target.value);
+      const newQty = parseInt(event.target.value);
+      console.log("event inside qtyInput: ", event);
 
       if (itemIndex !== -1) {
         cart[itemIndex].qty = newQty;
@@ -156,47 +158,52 @@ function printCart() {
         cartList[itemIndex].qty = newQty;
         cartList[itemIndex].total = (item.price * newQty).toFixed(2);
       }
-
-      if (applyPromotionsCart() === true) {
+      if (cart[itemIndex].offer) {
         console.log("A promotion was applied.");
         subTotalCell.style.textDecoration = 'line-through';
         subTotalCell.style.color = 'red';
         subTotalCell.textContent = (item.price * newQty).toFixed(2);
-    
+
         if (!discountCell.querySelector('.fa-piggy-bank')) {
-            const discountIcon = document.createElement('i');
-            discountIcon.className = 'fa fa-piggy-bank';
-            discountCell.appendChild(discountIcon);
+          const discountIcon = document.createElement('i');
+          discountIcon.className = 'fa fa-piggy-bank';
+          discountCell.appendChild(discountIcon);
         }
-    } else {
+      } else {
         console.log("No promotions were applied.");
         subTotalCell.textContent = (item.price * newQty).toFixed(2);
-    }    
+      }
       productCount();
       calculateTotal();
       applyPromotionsCart();
       printInput();
-
-      newRow.appendChild(discountCell);
     });
+    console.log("totalDisc: ", item.totalDisc + 5);
+    let subtotal = item.price * item.qty;
+    let discount = (subtotal * item.offer.percent) / 100;
+    let finalPrice = subtotal - discount;
+    prodTotalCell.textContent = parseFloat(finalPrice).toFixed(2);
 
     qtyCell.appendChild(qtyInput);
-    subTotalCell.textContent = (item.total).toFixed(2);
+    subTotalCell.textContent = parseFloat(item.total).toFixed(2);
 
     newRow.appendChild(nameCell);
     newRow.appendChild(priceCell);
     newRow.appendChild(qtyCell);
     newRow.appendChild(subTotalCell);
+    newRow.appendChild(prodTotalCell);
     newRow.appendChild(deleteBtn);
+    newRow.appendChild(discountCell);
 
     cartListTableBody.appendChild(newRow);
+    console.log("cart with offer: ", cart[itemIndex].offer);
   });
 }
 
 function printInput() {
   cart.forEach((item) => {
     const inputFieldsDiv = document.getElementById(`input-fields-${item.id}`);
-    if (inputFieldsDiv === null) { 
+    if (inputFieldsDiv === null) {
       return;
     }
     inputFieldsDiv.innerHTML = '';
@@ -242,10 +249,8 @@ function updateInputs() {
 // Exercise 7
 function addToCart(id) {
   const product = products.find((item) => item.id === id);
-
   if (product) {
     const cartProduct = cart.find((cartItem) => cartItem.name === product.name);
-
     if (cartProduct) {
       cartProduct.qty++;
       cartProduct.total += product.price;
@@ -257,6 +262,7 @@ function addToCart(id) {
         type: product.type,
         qty: 1,
         total: product.price,
+        totalDisc: 0,
         offer: product.offer,
       });
     }
@@ -301,11 +307,23 @@ function removeAllInputs() {
   });
 }
 
+// function discProd() {
+//   cart.forEach((item) => {
+//     const itemIndex = cart.findIndex((cartItem) => cartItem.name === item.name);
+//     if (cart[itemIndex].offer) {
+//       console.log("A promotion was applied.");
+//       subTotalCell.style.textDecoration = 'line-through';
+//       subTotalCell.style.color = 'red';
+//     }
+//   });
+// }
+
 function open_modal() {
   printCart();
   calculateTotal();
   productCount();
   applyPromotionsCart();
+  //discProd();
 }
 
 function productCount() {
