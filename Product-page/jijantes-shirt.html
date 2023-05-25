@@ -316,28 +316,41 @@
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
 
-  <script>
-    var zoomableImage = document.querySelector('.zoomable-image');
-  
-    zoomableImage.addEventListener('mousemove', function(event) {
-      var imageRect = zoomableImage.getBoundingClientRect();
-      var offsetX = event.clientX - imageRect.left;
-      var offsetY = event.clientY - imageRect.top;
-      var percentX = offsetX / imageRect.width;
-      var percentY = offsetY / imageRect.height;
-      var scale = 2.5;
-  
-      zoomableImage.style.transformOrigin = (percentX * 100) + '% ' + (percentY * 100) + '%';
-      zoomableImage.style.transform = 'scale(' + scale + ')';
-      zoomableImage.style.transition = 'none';
-    });
-  
-    zoomableImage.addEventListener('mouseleave', function() {
-      zoomableImage.style.transformOrigin = 'center center';
-      zoomableImage.style.transform = 'scale(1)';
-      zoomableImage.style.transition = 'transform 0.3s';
-    });
-  </script>
+    <script>
+      var imageContainer = document.querySelector('.image-container');
+      var zoomableImage = document.querySelector('.zoomable-image');
+      var thresholdDistance = 20; // Adjust this value as needed
+      
+      imageContainer.addEventListener('mousemove', function(event) {
+        var containerRect = imageContainer.getBoundingClientRect();
+        var imageRect = zoomableImage.getBoundingClientRect();
+        var offsetX = event.clientX - containerRect.left;
+        var offsetY = event.clientY - containerRect.top;
+        var percentX = offsetX / containerRect.width;
+        var percentY = offsetY / containerRect.height;
+        var scale = 2;
+      
+        // Check if cursor is within the threshold distance from the edges
+        var isWithinThreshold = offsetX > thresholdDistance && offsetX < containerRect.width - thresholdDistance &&
+          offsetY > thresholdDistance && offsetY < containerRect.height - thresholdDistance;
+      
+        if (isWithinThreshold) {
+          zoomableImage.style.transformOrigin = (percentX * 100) + '% ' + (percentY * 100) + '%';
+          zoomableImage.style.transform = 'scale(' + scale + ')';
+          zoomableImage.style.transition = 'none';
+        } else {
+          zoomableImage.style.transformOrigin = 'center center';
+          zoomableImage.style.transform = 'scale(1)';
+          zoomableImage.style.transition = 'transform 0.3s';
+        }
+      });
+      
+      imageContainer.addEventListener('mouseleave', function() {
+        zoomableImage.style.transformOrigin = 'center center';
+        zoomableImage.style.transform = 'scale(1)';
+        zoomableImage.style.transition = 'transform 0.3s';
+      });
+      </script>
 
   <script src="../js/shop.js"></script>
   <script src="../js/checkout.js"></script>
