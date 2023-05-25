@@ -69,9 +69,9 @@
       <div class="container">
         <div class="row mb-24">
           <div class="col-12 col-md-6 mb-8 mb-md-0">
-            <div class="position-relative mb-10 d-flex justify-content-center" style="height: 564px">
+            <div class="position-relative mb-10 d-flex justify-content-center image-container">
               <a class="position-absolute top-50 start-0 ms-8 translate-middle-y" href="#"></a>
-              <img id="main-image" class="img-fluid" style="object-fit: cover" src="https://cdn.shopify.com/s/files/1/0731/7861/1992/files/JIJANTES_GL7248_FOTO1_da390d6b-4069-4501-a9cd-d6c8cc640168_300x.jpg?v=1682434999" alt="" />
+              <img id="main-image" class="img-fluid zoomable-image" style="object-fit: cover" src="https://cdn.shopify.com/s/files/1/0731/7861/1992/files/JIJANTES_GL7248_FOTO1_da390d6b-4069-4501-a9cd-d6c8cc640168_300x.jpg?v=1682434999" alt="" />
               <a class="position-absolute top-50 end-0 me-8 translate-middle-y" href="#"></a>
             </div>
             
@@ -315,6 +315,29 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
+
+  <script>
+    var zoomableImage = document.querySelector('.zoomable-image');
+  
+    zoomableImage.addEventListener('mousemove', function(event) {
+      var imageRect = zoomableImage.getBoundingClientRect();
+      var offsetX = event.clientX - imageRect.left;
+      var offsetY = event.clientY - imageRect.top;
+      var percentX = offsetX / imageRect.width;
+      var percentY = offsetY / imageRect.height;
+      var scale = 2.5;
+  
+      zoomableImage.style.transformOrigin = (percentX * 100) + '% ' + (percentY * 100) + '%';
+      zoomableImage.style.transform = 'scale(' + scale + ')';
+      zoomableImage.style.transition = 'none';
+    });
+  
+    zoomableImage.addEventListener('mouseleave', function() {
+      zoomableImage.style.transformOrigin = 'center center';
+      zoomableImage.style.transform = 'scale(1)';
+      zoomableImage.style.transition = 'transform 0.3s';
+    });
+  </script>
 
   <script src="../js/shop.js"></script>
   <script src="../js/checkout.js"></script>
