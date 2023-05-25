@@ -177,12 +177,8 @@ function printCart() {
       calculateTotal();
       applyPromotionsCart();
       printInput();
+      prodTotalCell.textContent = item.totalDisc;
     });
-    console.log("totalDisc: ", item.totalDisc + 5);
-    let subtotal = item.price * item.qty;
-    let discount = (subtotal * item.offer.percent) / 100;
-    let finalPrice = subtotal - discount;
-    prodTotalCell.textContent = parseFloat(finalPrice).toFixed(2);
 
     qtyCell.appendChild(qtyInput);
     subTotalCell.textContent = parseFloat(item.total).toFixed(2);

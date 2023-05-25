@@ -5,7 +5,7 @@
       "price": 69.99,
       "type": "shirt",
       "offer": {
-        "number": 2,
+        "number": 3,
         "percent": 20
       }
     },
@@ -21,7 +21,7 @@
       "price": 69.99,
       "type": "shirt",
       "offer": {
-        "number": 2,
+        "number": 3,
         "percent": 20
       }
     },
