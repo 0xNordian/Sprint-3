@@ -2,7 +2,7 @@
     {
       "id": 1,
       "name": "Ultimate Mostoles",
-      "price": 69.99,
+      "price": 100,
       "type": "shirt",
       "offer": {
         "number": 3,
@@ -12,13 +12,13 @@
     {
       "id": 2,
       "name": "Porcinos",
-      "price": 69.99,
+      "price": 100,
       "type": "shirt"
     },
     {
       "id": 3,
       "name": "Jijantes",
-      "price": 69.99,
+      "price": 100,
       "type": "shirt",
       "offer": {
         "number": 3,

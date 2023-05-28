@@ -55,31 +55,10 @@ function calculateTotal() {
   const cartTotal = document.getElementById('total_price');
   cartTotal.innerText = '0';
   let totalPrice = 0;
-
-  cart.forEach((item) => {
-    if (item.offer && item.qty >= item.offer.number) {
-      let subtotal = item.price * item.qty;
-      let discount = (subtotal * item.offer.percent) / 100;
-      let finalPrice = subtotal - discount;
-      totalPrice += finalPrice;
-    } else {
-      totalPrice += parseFloat(item.total);
-    }
-  });
-
+  cart.forEach((item) => totalPrice += parseFloat(item.total));
   cartTotal.innerHTML = `€${totalPrice.toFixed(2)}`;
   return totalPrice;
 }
-
-
-// function calculateTotal() {
-//   const cartTotal = document.getElementById('total_price');
-//   cartTotal.innerText = '0';
-//   let totalPrice = 0;
-//   cart.forEach((item) => totalPrice += parseFloat(item.total));
-//   cartTotal.innerHTML = `€${totalPrice.toFixed(2)}`;
-//   return totalPrice;
-// }
 
 // Exercise 4
 function generateCart() {
@@ -120,8 +99,12 @@ function applyPromotionsCart() {
 }
 
 // Exercise 6
-function updateCartItems() {
+function printCart() {
+  const cartListTableBody = document.getElementById('cart_list');
+  cartListTableBody.innerHTML = '';
+
   const cartItems = {};
+
   cart.forEach((item) => {
     const name = item.name;
     if (!cartItems[name]) {
@@ -130,109 +113,92 @@ function updateCartItems() {
       cartItems[name].qty += item.qty;
     }
   });
-  return cartItems;
-}
-
-function createCell(content, classNames, type = 'td') {
-  const newCell = document.createElement(type);
-  newCell.textContent = content;
-  if (classNames) newCell.classList = classNames;
-  return newCell;
-}
-
-
-function setupEventListeners(deleteBtn, qtyInput, item, itemIndex, subTotalCell, prodTotalCell, discountCell) {
-  // ...existing code...
-
-  qtyInput.addEventListener('change', (event) => {
-    const newQty = parseInt(event.target.value);
-        if (newQty >= 0) {
-      // Update quantity and total in the actual cart
-      cart[itemIndex].qty = newQty;
-      cart[itemIndex].total = cart[itemIndex].price * newQty;
-      //... rest of the code
-    }
-
-    // ...existing code...
-    subTotalCell.textContent = (item.price * newQty).toFixed(2);
-    if (item.offer && newQty >= cart[itemIndex].offer.number) {
-      console.log("A promotion was applied.");
-      subTotalCell.style.textDecoration = 'line-through';
-      subTotalCell.style.color = 'red';
-      let subtotal = item.price * newQty;
-      let discount = (subtotal * item.offer.percent) / 100;
-      let finalPrice = subtotal - discount;
-      prodTotalCell.textContent = finalPrice.toFixed(2);
-
-      if (!discountCell.querySelector('.fa-piggy-bank')) {
-        const discountIcon = document.createElement('i');
-        discountIcon.className = 'fa fa-piggy-bank';
-        discountCell.appendChild(discountIcon);
-      }
-    } else {
-      console.log("No promotions were applied.");
-      subTotalCell.textContent = (item.price * newQty).toFixed(2);
-    }
-    // Refresh the cart and total price
-    console.log("cart setupEventListeners: ", cart);
-    productCount();
-    calculateTotal();
-    applyPromotionsCart();
-    printInput();
-  });
-}
-
-
-function createNewRow(item) {
-  const newRow = document.createElement('tr');
-
-  const deleteBtn = createCell('', 'text-center');
-  const deleteIcon = document.createElement('i');
-  deleteIcon.className = 'fa fa-trash';
-  deleteBtn.appendChild(deleteIcon);
-  deleteBtn.addEventListener('click', (event) => {
-    removeFromCart(itemIndex);
-  })
-
-  const qtyInput = document.createElement('input');
-  qtyInput.type = 'number';
-  qtyInput.value = item.qty;
-  qtyInput.classList = 'qty-id text-center';
-
-  const itemIndex = cart.findIndex((cartItem) => cartItem.name === item.name);
-
-  const subTotalCell = createCell('', 'text-center');
-  const prodTotalCell = createCell('', 'text-center');
-  const discountCell = createCell('', 'text-center');
-
-  setupEventListeners(deleteBtn, qtyInput, item, itemIndex, subTotalCell, prodTotalCell, discountCell);
-
-  subTotalCell.textContent = (item.price * item.qty).toFixed(2);
-
-  newRow.appendChild(createCell(item.name, '', 'th'));
-  newRow.appendChild(createCell(item.price, 'text-center'));
-  newRow.appendChild(createCell('', 'text-center').appendChild(qtyInput));
-  newRow.appendChild(subTotalCell);
-  newRow.appendChild(prodTotalCell);
-  newRow.appendChild(deleteBtn);
-  newRow.appendChild(discountCell);
-
-  return newRow;
-}
-
-function printCart() {
-  const cartListTableBody = document.getElementById('cart_list');
-  cartListTableBody.innerHTML = '';
-
-  const cartItems = updateCartItems();
-
   Object.values(cartItems).forEach((item) => {
-    const newRow = createNewRow(item);
+    const newRow = document.createElement('tr');
+    const nameCell = document.createElement('th');
+    const priceCell = document.createElement('td');
+    priceCell.classList = 'text-center';
+    const qtyCell = document.createElement('td');
+    qtyCell.classList = 'text-center';
+    const subTotalCell = document.createElement('td');
+    subTotalCell.classList = 'text-center';
+    const prodTotalCell = document.createElement('td');
+    prodTotalCell.classList = 'text-center';
+    const deleteBtn = document.createElement('td');
+    deleteBtn.classList = 'text-center';
+    const discountCell = document.createElement('td');
+    discountCell.classList = 'text-center';
+
+    nameCell.textContent = item.name;
+    priceCell.textContent = item.price;
+
+    const itemIndex = cart.findIndex((cartItem) => cartItem.name === item.name);
+
+    const deleteIcon = document.createElement('i');
+    deleteIcon.className = 'fa fa-trash';
+    deleteBtn.appendChild(deleteIcon);
+    deleteBtn.addEventListener('click', (event) => {
+      removeFromCart(itemIndex);
+    })
+
+    const qtyInput = document.createElement('input');
+    qtyInput.type = 'number';
+    qtyInput.value = item.qty;
+    qtyInput.classList = 'qty-id text-center';
+    qtyInput.addEventListener('change', (event) => {
+      const newQty = parseInt(event.target.value);
+      console.log("event inside qtyInput: ", event);
+
+      if (itemIndex !== -1) {
+        cart[itemIndex].qty = newQty;
+        cart[itemIndex].total = (item.price * newQty).toFixed(2);
+      }
+
+      if (cartList[itemIndex]) {
+        cartList[itemIndex].qty = newQty;
+        cartList[itemIndex].total = (item.price * newQty).toFixed(2);
+      }
+      if (cart[itemIndex].offer) {
+        console.log("A promotion was applied.");
+        subTotalCell.style.textDecoration = 'line-through';
+        subTotalCell.style.color = 'red';
+        subTotalCell.textContent = (item.price * newQty).toFixed(2);
+
+        if (!discountCell.querySelector('.fa-piggy-bank')) {
+          const discountIcon = document.createElement('i');
+          discountIcon.className = 'fa fa-piggy-bank';
+          discountCell.appendChild(discountIcon);
+        }
+      } else {
+        console.log("No promotions were applied.");
+        subTotalCell.textContent = (item.price * newQty).toFixed(2);
+      }
+      productCount();
+      calculateTotal();
+      applyPromotionsCart();
+      printInput();
+    });
+    // console.log("totalDisc: ", item.totalDisc + 5);
+    // let subtotal = item.price * item.qty;
+    // let discount = (subtotal * item.offer.percent) / 100;
+    // let finalPrice = subtotal - discount;
+    // prodTotalCell.textContent = parseFloat(finalPrice).toFixed(2);
+
+    qtyCell.appendChild(qtyInput);
+    subTotalCell.textContent = parseFloat(item.total).toFixed(2);
+
+    newRow.appendChild(nameCell);
+    newRow.appendChild(priceCell);
+    newRow.appendChild(qtyCell);
+    newRow.appendChild(subTotalCell);
+    newRow.appendChild(prodTotalCell);
+    newRow.appendChild(deleteBtn);
+    newRow.appendChild(discountCell);
+
     cartListTableBody.appendChild(newRow);
-    //console.log("cart with offer: ", cart[itemIndex].offer);
+    console.log("cart with offer: ", cart[itemIndex].offer);
   });
 }
-
 
 function printInput() {
   cart.forEach((item) => {
@@ -340,6 +306,17 @@ function removeAllInputs() {
     removeInput(itemId);
   });
 }
+
+// function discProd() {
+//   cart.forEach((item) => {
+//     const itemIndex = cart.findIndex((cartItem) => cartItem.name === item.name);
+//     if (cart[itemIndex].offer) {
+//       console.log("A promotion was applied.");
+//       subTotalCell.style.textDecoration = 'line-through';
+//       subTotalCell.style.color = 'red';
+//     }
+//   });
+// }
 
 function open_modal() {
   printCart();
