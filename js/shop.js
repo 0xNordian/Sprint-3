@@ -63,10 +63,11 @@ function calculateTotal() {
       let finalPrice = subtotal - discount;
       totalPrice += finalPrice;
     } else {
-      totalPrice += parseFloat(item.total);
+      //totalPrice += parseFloat(item.total);
+      item.total = item.price * item.qty;
+      totalPrice += item.total;
     }
   });
-
   cartTotal.innerHTML = `€${totalPrice.toFixed(2)}`;
   return totalPrice;
 }
@@ -128,6 +129,7 @@ function updateCartItems() {
       cartItems[name] = { id: item.id, name, qty: item.qty, price: item.price, total: item.total, totalDisc: 0, offer: item.offer };
     } else {
       cartItems[name].qty += item.qty;
+      cartItems[name].total += item.total;
     }
   });
   return cartItems;
@@ -274,6 +276,7 @@ function updateInputs() {
     const input = document.getElementById(`lp-input-id-${item.id}`);
     if (input) {
       input.value = item.qty;
+      console.log("item total", item.total);
     }
   });
 }
