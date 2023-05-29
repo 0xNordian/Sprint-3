@@ -18,7 +18,6 @@ async function initialize() {
 
 initialize();
 
-
 // Array with products (objects) added directly with push(). Products in this array are repeated.
 var cartList = [];
 
@@ -71,16 +70,6 @@ function calculateTotal() {
   cartTotal.innerHTML = `€${totalPrice.toFixed(2)}`;
   return totalPrice;
 }
-
-
-// function calculateTotal() {
-//   const cartTotal = document.getElementById('total_price');
-//   cartTotal.innerText = '0';
-//   let totalPrice = 0;
-//   cart.forEach((item) => totalPrice += parseFloat(item.total));
-//   cartTotal.innerHTML = `€${totalPrice.toFixed(2)}`;
-//   return totalPrice;
-// }
 
 // Exercise 4
 function generateCart() {
@@ -344,56 +333,12 @@ function removeAllInputs() {
   });
 }
 
-function updateCartModal() {
-  const cartItems = document.querySelectorAll('#cart_list tr');
-  cartItems.forEach((cartItem) => {
-    const name = cartItem.cells[0].textContent;
-    const qtyInput = cartItem.querySelector('.qty-id');
-    const subTotalCell = cartItem.cells[3];
-    const prodTotalCell = cartItem.cells[4];
-    const discountCell = cartItem.cells[6];
-
-    const item = cart.find((item) => item.name === name);
-    const itemIndex = cart.findIndex((cartItem) => cartItem.name === name);
-    const newQty = parseInt(qtyInput.value);
-
-    if (item.offer && newQty >= item.offer.number) {
-      subTotalCell.style.textDecoration = 'line-through';
-      subTotalCell.style.color = 'red';
-
-      const subtotal = item.price * newQty;
-      const discount = (subtotal * item.offer.percent) / 100;
-      const finalPrice = subtotal - discount;
-      prodTotalCell.textContent = finalPrice.toFixed(2);
-
-      if (!discountCell.querySelector('.fa-piggy-bank')) {
-        const discountIcon = document.createElement('i');
-        discountIcon.className = 'fa fa-piggy-bank';
-        discountCell.appendChild(discountIcon);
-      }
-    } else {
-      subTotalCell.style.textDecoration = '';
-      subTotalCell.style.color = '';
-      subTotalCell.textContent = (item.price * newQty).toFixed(2);
-      prodTotalCell.textContent = '';
-      discountCell.innerHTML = '';
-    }
-  });
-}
-
-
 function open_modal() {
   printCart();
   calculateTotal();
   productCount();
   applyPromotionsCart();
-  updateCartModal();
-  //discProd();
 }
-
-const cartModal = document.getElementById('cartModal');
-cartModal.addEventListener('shown.bs.modal', open_modal);
-
 
 function productCount() {
   let productCount = 0;
