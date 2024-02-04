@@ -1,0 +1,64 @@
+[
+    {
+      "id": 1,
+      "name": "Ultimate Mostoles",
+      "price": 100,
+      "type": "shirt",
+      "offer": {
+        "number": 3,
+        "percent": 20
+      }
+    },
+    {
+      "id": 2,
+      "name": "Porcinos",
+      "price": 100,
+      "type": "shirt"
+    },
+    {
+      "id": 3,
+      "name": "Jijantes",
+      "price": 100,
+      "type": "shirt",
+      "offer": {
+        "number": 3,
+        "percent": 20
+      }
+    },
+    {
+      "id": 4,
+      "name": "Buff - El Barrio",
+      "price": 20,
+      "type": "bufanda"
+    },
+    {
+      "id": 5,
+      "name": "Buff - Aniquiladores",
+      "price": 20,
+      "type": "bufanda"
+    },
+    {
+      "id": 6,
+      "name": "Buff - Rayo de BCN",
+      "price": 20,
+      "type": "bufanda"
+    },
+    {
+      "id": 7,
+      "name": "Gorra - Kuni",
+      "price": 30,
+      "type": "gorra"
+    },
+    {
+      "id": 8,
+      "name": "Gorra - Porcinos",
+      "price": 30,
+      "type": "gorra"
+    },
+    {
+      "id": 9,
+      "name": "Gorra - xBuyer",
+      "price": 30,
+      "type": "gorra"
+    }
+  ]
